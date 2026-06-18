@@ -1,0 +1,52 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Environment
+.env
+.env.local
+.env.production
+*.env
+
+# Backend uploads & DB
+backend/uploads/
+backend/*.db
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Claude session cache
+.claude/
+
+# ChromaDB / vector stores
+vector_store/
+
+# Jupyter
+.ipynb_checkpoints/
