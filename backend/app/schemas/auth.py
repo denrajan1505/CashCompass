@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional
 from uuid import UUID
+from datetime import datetime
 
 
 class RegisterRequest(BaseModel):
@@ -65,6 +66,7 @@ class UserResponse(BaseModel):
     subscription_status: str
     is_verified: bool
     is_admin: bool = False
+    created_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True

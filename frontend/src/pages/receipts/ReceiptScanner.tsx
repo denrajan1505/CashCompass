@@ -17,7 +17,15 @@ export default function ReceiptScanner() {
   const [result, setResult] = useState<ExtractedReceiptData | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
-  const isPro = user?.subscription_status !== 'free'
+  const isPro = user?.subscription_status !== 'free' || user?.is_admin
+
+  const trialDaysLeft = (() => {
+    if (isPro) return null
+    if (!user?.created_at) return 0
+    const created = new Date(user.created_at)
+    const days = Math.floor((Date.now() - created.getTime()) / (1000 * 60 * 60 * 24))
+    return Math.max(0, 3 - days)
+  })()
   const [creating, setCreating] = useState(false)
 
   async function createExpense() {
@@ -83,14 +91,14 @@ export default function ReceiptScanner() {
     if (file) handleFile(file)
   }
 
-  if (!isPro) {
+  if (!isPro && trialDaysLeft === 0) {
     return (
       <div className="space-y-5 animate-fade-in">
         <h1 className="text-2xl font-bold text-white">Receipt Scanner</h1>
         <Card className="text-center py-16">
           <FileImage className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-          <h2 className="text-lg font-semibold text-white mb-2">Pro Feature</h2>
-          <p className="text-gray-500 mb-6">Scan receipts with AI to automatically extract merchant, amount and date.</p>
+          <h2 className="text-lg font-semibold text-white mb-2">Free Trial Ended</h2>
+          <p className="text-gray-500 mb-6">Your 3-day free trial has ended. Upgrade to Pro to continue scanning receipts.</p>
           <Button onClick={() => window.location.href = '/subscription'}>Upgrade to Pro — ₹499/month</Button>
         </Card>
       </div>
@@ -100,7 +108,14 @@ export default function ReceiptScanner() {
   return (
     <div className="space-y-5 animate-fade-in max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-white">Receipt Scanner</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-white">Receipt Scanner</h1>
+          {!isPro && trialDaysLeft !== null && trialDaysLeft > 0 && (
+            <span className="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-medium">
+              {trialDaysLeft} day{trialDaysLeft !== 1 ? 's' : ''} free trial left
+            </span>
+          )}
+        </div>
         <p className="text-gray-500 text-sm mt-0.5">AI-powered OCR via Google Gemini</p>
       </div>
 

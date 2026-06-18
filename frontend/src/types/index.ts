@@ -8,6 +8,7 @@ export interface User {
   subscription_status: 'free' | 'pro' | 'premium'
   is_verified: boolean
   is_admin: boolean
+  created_at?: string
 }
 
 export interface Expense {
