@@ -179,7 +179,9 @@ export default function Dashboard() {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ background: '#1a1a26', border: '1px solid #3a3a50', borderRadius: 12 }}
+                    contentStyle={{ background: '#1a1a26', border: '1px solid #3a3a50', borderRadius: 12, color: '#fff' }}
+                    itemStyle={{ color: '#e2e8f0' }}
+                    labelStyle={{ color: '#94a3b8' }}
                     formatter={(v: any, _: any, props: any) => [formatCurrency(v, m.currency), props.payload.category]}
                   />
                 </PieChart>
