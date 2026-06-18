@@ -55,7 +55,7 @@ export default function ReceiptScanner() {
   }
 
   async function handleFile(file: File) {
-    if (!isPro) { toast.error('Receipt scanning is a Pro feature. Upgrade to use it!'); return }
+    if (!isPro && trialDaysLeft === 0) { toast.error('Your 3-day free trial has ended. Upgrade to Pro!'); return }
     setPreview(URL.createObjectURL(file))
     setResult(null)
     setUploading(true)
