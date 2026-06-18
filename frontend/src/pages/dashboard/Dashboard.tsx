@@ -118,7 +118,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Spending Trend — last 6 months */}
         <Card className="lg:col-span-2">
-          <h2 className="text-sm font-semibold text-gray-300 mb-4">Monthly Spending (last 6 months)</h2>
+          <h2 className="text-sm font-semibold text-gray-300 mb-4">Monthly Spending (last 6 active months)</h2>
           {m.daily_spending.length === 0 ? (
             <div className="flex items-center justify-center h-[200px] text-gray-600 text-sm">
               No spending data yet

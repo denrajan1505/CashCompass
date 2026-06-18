@@ -47,21 +47,20 @@ def get_dashboard_metrics(db: Session, user: User) -> DashboardMetrics:
         for r in cat_rows
     ]
 
-    # Monthly spending last 6 months (for dashboard chart)
+    # Monthly spending — all months with data, return last 6 that have activity
     daily_rows = db.query(
         Expense.expense_date,
         func.sum(func.coalesce(Expense.amount_in_base, Expense.amount)).label("total"),
     ).filter(
         Expense.user_id == user.id,
-        Expense.expense_date >= today - timedelta(days=179),
     ).group_by(Expense.expense_date).order_by(Expense.expense_date).all()
 
-    # Aggregate by month for the dashboard chart
     monthly_map: dict = {}
     for r in daily_rows:
         key = str(r.expense_date)[:7]  # "YYYY-MM"
         monthly_map[key] = monthly_map.get(key, Decimal(0)) + Decimal(str(r.total or 0))
-    daily_spending = [DailySpending(date=k, amount=v) for k, v in sorted(monthly_map.items())]
+    all_monthly = [DailySpending(date=k, amount=v) for k, v in sorted(monthly_map.items())]
+    daily_spending = all_monthly[-6:]  # last 6 months that have data
 
     # Recent expenses
     recent = db.query(Expense).filter(Expense.user_id == user.id).order_by(Expense.created_at.desc()).limit(5).all()
