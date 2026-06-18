@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from typing import Optional, List
 from datetime import date
@@ -9,6 +10,7 @@ from app.core.dependencies import get_current_user
 from app.models.user import User
 from app.schemas.expense import ExpenseCreate, ExpenseUpdate, ExpenseResponse, ExpenseListResponse, ExpenseFilter
 from app.services import expense_service
+from app.services import export_service
 
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 
@@ -54,3 +56,24 @@ def update(expense_id: str, req: ExpenseUpdate, db: Session = Depends(get_db), u
 @router.delete("/{expense_id}", status_code=204)
 def delete(expense_id: str, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     expense_service.delete_expense(db, user, expense_id)
+
+
+@router.get("/export/download")
+def export(
+    format: str = Query("csv", regex="^(csv|xlsx|pdf)$"),
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    if format == "csv":
+        data = export_service.export_csv(db, user)
+        return Response(content=data, media_type="text/csv",
+                        headers={"Content-Disposition": "attachment; filename=expenses.csv"})
+    if format == "xlsx":
+        data = export_service.export_xlsx(db, user)
+        return Response(content=data,
+                        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        headers={"Content-Disposition": "attachment; filename=expenses.xlsx"})
+    if format == "pdf":
+        data = export_service.export_pdf(db, user)
+        return Response(content=data, media_type="application/pdf",
+                        headers={"Content-Disposition": "attachment; filename=expenses.pdf"})

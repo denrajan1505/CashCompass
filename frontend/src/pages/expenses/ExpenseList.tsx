@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Search, Trash2, Edit2, Filter, Mic } from 'lucide-react'
+import { Plus, Search, Trash2, Edit2, Filter, Mic, Download } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { expensesApi, type CreateExpensePayload } from '@/api/expenses'
@@ -61,6 +61,58 @@ function AddExpenseModal({ open, onClose }: { open: boolean; onClose: () => void
   )
 }
 
+function ExportButton() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const token = localStorage.getItem('access_token')
+
+  function download(format: string) {
+    const url = `/api/v1/expenses/export/download?format=${format}`
+    const a = document.createElement('a')
+    a.href = url
+    // Attach token via fetch then create blob URL
+    fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.blob())
+      .then(blob => {
+        const blobUrl = URL.createObjectURL(blob)
+        a.href = blobUrl
+        a.download = `expenses.${format}`
+        a.click()
+        URL.revokeObjectURL(blobUrl)
+      })
+    setOpen(false)
+  }
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 px-4 py-2 bg-dark-700 border border-dark-400 text-gray-300 hover:text-white hover:border-primary-500 rounded-xl text-sm font-medium transition-all"
+      >
+        <Download className="w-4 h-4" />
+        Export
+      </button>
+      {open && (
+        <div className="absolute right-0 top-11 bg-dark-800 border border-dark-500 rounded-xl shadow-xl z-20 py-1 min-w-[140px]">
+          {[
+            { fmt: 'csv', label: 'CSV (.csv)' },
+            { fmt: 'xlsx', label: 'Excel (.xlsx)' },
+            { fmt: 'pdf', label: 'PDF (.pdf)' },
+          ].map(({ fmt, label }) => (
+            <button
+              key={fmt}
+              onClick={() => download(fmt)}
+              className="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-dark-700 hover:text-white transition-colors"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function ExpenseList() {
   const [showAdd, setShowAdd] = useState(false)
   const [search, setSearch] = useState('')
@@ -86,9 +138,12 @@ export default function ExpenseList() {
           <h1 className="text-2xl font-bold text-white">Expenses</h1>
           <p className="text-gray-500 text-sm mt-0.5">{data?.total || 0} total transactions</p>
         </div>
-        <Button onClick={() => setShowAdd(true)} leftIcon={<Plus className="w-4 h-4" />}>
-          Add Expense
-        </Button>
+        <div className="flex items-center gap-2">
+          <ExportButton />
+          <Button onClick={() => setShowAdd(true)} leftIcon={<Plus className="w-4 h-4" />}>
+            Add Expense
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}
