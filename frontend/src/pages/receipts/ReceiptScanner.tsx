@@ -21,7 +21,7 @@ export default function ReceiptScanner() {
 
   const trialDaysLeft = (() => {
     if (isPro) return null
-    if (!user?.created_at) return 0
+    if (!user?.created_at) return 3  // unknown date → give benefit of the doubt
     const created = new Date(user.created_at)
     const days = Math.floor((Date.now() - created.getTime()) / (1000 * 60 * 60 * 24))
     return Math.max(0, 3 - days)

@@ -23,11 +23,12 @@ def check_receipt_access(user: User):
     if user.subscription_status in ("pro", "premium"):
         return
     # Free users get 3-day trial from registration
-    if user.created_at:
-        created = user.created_at.replace(tzinfo=timezone.utc) if user.created_at.tzinfo is None else user.created_at
-        days_since = (datetime.now(timezone.utc) - created).days
-        if days_since <= TRIAL_DAYS:
-            return
+    if not user.created_at:
+        return  # no creation date → allow access
+    created = user.created_at.replace(tzinfo=timezone.utc) if user.created_at.tzinfo is None else user.created_at
+    days_since = (datetime.now(timezone.utc) - created).days
+    if days_since <= TRIAL_DAYS:
+        return
     raise HTTPException(
         status_code=403,
         detail=f"Receipt Scanner is available free for {TRIAL_DAYS} days. Upgrade to Pro to continue."
