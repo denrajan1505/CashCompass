@@ -153,33 +153,50 @@ export default function Dashboard() {
           )}
         </Card>
 
-        {/* Category Pie */}
+        {/* Category Donut */}
         <Card>
-          <h2 className="text-sm font-semibold text-gray-300 mb-4">By Category</h2>
-          <ResponsiveContainer width="100%" height={160}>
-            <PieChart>
-              <Pie data={m.category_breakdown} dataKey="amount" cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={2}>
-                {m.category_breakdown.map((entry: any) => (
-                  <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] || '#6C63FF'} />
+          <h2 className="text-sm font-semibold text-gray-300 mb-3">By Category</h2>
+          {m.category_breakdown.length === 0 ? (
+            <div className="flex items-center justify-center h-[200px] text-gray-600 text-sm">No data yet</div>
+          ) : (
+            <>
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={m.category_breakdown.map((c: any) => ({ ...c, amount: Number(c.amount) }))}
+                    dataKey="amount"
+                    nameKey="category"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={55}
+                    outerRadius={85}
+                    paddingAngle={3}
+                    startAngle={90}
+                    endAngle={-270}
+                  >
+                    {m.category_breakdown.map((entry: any) => (
+                      <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] || '#6C63FF'} stroke="none" />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{ background: '#1a1a26', border: '1px solid #3a3a50', borderRadius: 12 }}
+                    formatter={(v: any, _: any, props: any) => [formatCurrency(v, m.currency), props.payload.category]}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="space-y-2 mt-1">
+                {m.category_breakdown.slice(0, 4).map((c: any) => (
+                  <div key={c.category} className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: CATEGORY_COLORS[c.category] || '#6C63FF' }} />
+                      <span className="text-gray-400">{c.category}</span>
+                    </div>
+                    <span className="text-gray-300 font-medium">{Number(c.percentage).toFixed(0)}%</span>
+                  </div>
                 ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{ background: '#1a1a26', border: '1px solid #3a3a50', borderRadius: 12 }}
-                formatter={(v: any) => formatCurrency(v, m.currency)}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="space-y-1.5 mt-2">
-            {m.category_breakdown.slice(0, 4).map((c: any) => (
-              <div key={c.category} className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: CATEGORY_COLORS[c.category] || '#6C63FF' }} />
-                  <span className="text-gray-400">{c.category}</span>
-                </div>
-                <span className="text-gray-300 font-medium">{c.percentage.toFixed(0)}%</span>
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </Card>
       </div>
 
