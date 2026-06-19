@@ -1,6 +1,5 @@
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { authApi } from '@/api/auth'
 import { useAuthStore } from '@/store/authStore'
@@ -19,6 +18,7 @@ const LANGUAGES = [
 
 export default function Settings() {
   const { user, updateUser } = useAuthStore()
+  const queryClient = useQueryClient()
   const { register, handleSubmit } = useForm({
     defaultValues: {
       full_name: user?.full_name || '',
@@ -29,7 +29,11 @@ export default function Settings() {
 
   const update = useMutation({
     mutationFn: authApi.updateProfile,
-    onSuccess: (data) => { updateUser(data); toast.success('Profile updated!') },
+    onSuccess: (data) => {
+      updateUser(data)
+      queryClient.invalidateQueries()
+      toast.success('Profile updated!')
+    },
     onError: () => toast.error('Update failed'),
   })
 

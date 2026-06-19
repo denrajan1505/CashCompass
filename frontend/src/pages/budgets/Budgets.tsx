@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { budgetsApi } from '@/api/budgets'
 import { CATEGORIES } from '@/types'
+import { useAuthStore } from '@/store/authStore'
 import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
 import Card from '@/components/ui/Card'
@@ -51,6 +52,7 @@ function BudgetCard({ budget, onDelete }: { budget: Budget; onDelete: () => void
 }
 
 export default function Budgets() {
+  const currency = useAuthStore(s => s.user?.preferred_currency || 'INR')
   const [showAdd, setShowAdd] = useState(false)
   const today = new Date()
   const [month, setMonth] = useState(today.getMonth() + 1)
@@ -104,7 +106,7 @@ export default function Budgets() {
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm text-gray-400">Overall Budget Usage</span>
             <span className="text-sm font-semibold text-white">
-              {formatCurrency(totalSpent, 'INR')} / {formatCurrency(totalBudget, 'INR')}
+              {formatCurrency(totalSpent, currency)} / {formatCurrency(totalBudget, currency)}
             </span>
           </div>
           <div className="h-3 bg-dark-600 rounded-full overflow-hidden">
