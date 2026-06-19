@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { Compass, Mail, Lock } from 'lucide-react'
+import { Compass, Mail, Lock, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
@@ -18,6 +18,7 @@ export default function Login() {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>()
   const [loading, setLoading] = useState(false)
   const [remember, setRemember] = useState(false)
+  const [loginError, setLoginError] = useState('')
 
   // Pre-fill saved email on mount
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function Login() {
 
   async function onSubmit(data: FormData) {
     setLoading(true)
+    setLoginError('')
     try {
       const res = await authApi.login(data)
       if (remember) {
@@ -40,7 +42,9 @@ export default function Login() {
       setAuth(res.user, res.access_token, res.refresh_token)
       navigate('/dashboard')
     } catch (e: any) {
-      toast.error(e.response?.data?.detail || 'Login failed')
+      const msg = e.response?.data?.detail || 'Invalid email or password'
+      setLoginError(msg)
+      toast.error(msg)
     } finally {
       setLoading(false)
     }
@@ -60,6 +64,12 @@ export default function Login() {
 
         <div className="bg-dark-800 border border-dark-500 rounded-2xl p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {loginError && (
+              <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 text-red-400 text-sm px-4 py-3 rounded-xl">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{loginError}</span>
+              </div>
+            )}
             <Input
               label="Email"
               type="email"
