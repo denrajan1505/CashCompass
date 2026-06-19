@@ -61,10 +61,20 @@ export default function Register() {
             <Input
               label="Password"
               type="password"
-              placeholder="Min 8 characters"
+              placeholder="Min 8 chars, upper, lower, number, symbol"
               leftIcon={<Lock className="w-4 h-4" />}
               error={errors.password?.message}
-              {...register('password', { required: 'Password required', minLength: { value: 8, message: 'Min 8 characters' } })}
+              {...register('password', {
+                required: 'Password required',
+                validate: v => {
+                  if (v.length < 8) return 'Min 8 characters'
+                  if (!/[A-Z]/.test(v)) return 'Must include an uppercase letter'
+                  if (!/[a-z]/.test(v)) return 'Must include a lowercase letter'
+                  if (!/[0-9]/.test(v)) return 'Must include a number'
+                  if (!/[!@#$%^&*()_+\-=\[\]{}|;':",./<>?]/.test(v)) return 'Must include a special character'
+                  return true
+                },
+              })}
             />
             <Input
               label="Confirm Password"

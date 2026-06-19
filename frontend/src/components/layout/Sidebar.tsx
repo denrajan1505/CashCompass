@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { clsx } from 'clsx'
 import {
@@ -6,6 +7,8 @@ import {
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import Badge from '@/components/ui/Badge'
+import Modal from '@/components/ui/Modal'
+import Button from '@/components/ui/Button'
 
 const nav = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -19,6 +22,7 @@ const nav = [
 export default function Sidebar() {
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
 
   function handleLogout() {
     logout()
@@ -79,11 +83,19 @@ export default function Sidebar() {
           <Settings className="w-4 h-4" />
           <span>Settings</span>
         </NavLink>
-        <button onClick={handleLogout}
+        <button onClick={() => setShowLogoutModal(true)}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all">
           <LogOut className="w-4 h-4" />
           <span>Logout</span>
         </button>
+
+        <Modal open={showLogoutModal} onClose={() => setShowLogoutModal(false)} title="Confirm Logout" size="sm">
+          <p className="text-gray-400 text-sm mb-6">Are you sure you want to log out? You'll need to sign in again to access your account.</p>
+          <div className="flex gap-3">
+            <Button variant="ghost" className="flex-1" onClick={() => setShowLogoutModal(false)}>Cancel</Button>
+            <Button variant="danger" className="flex-1" onClick={handleLogout}>Yes, Logout</Button>
+          </div>
+        </Modal>
 
         {/* User */}
         {user && (
