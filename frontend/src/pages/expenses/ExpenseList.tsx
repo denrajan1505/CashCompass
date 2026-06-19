@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Search, Trash2, Edit2, Filter, Mic, Download } from 'lucide-react'
+import { Plus, Search, Trash2, Edit2, Filter, Mic, Download, Calendar } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { expensesApi, type CreateExpensePayload } from '@/api/expenses'
@@ -48,9 +48,21 @@ function AddExpenseModal({ open, onClose }: { open: boolean; onClose: () => void
           </select>
         </div>
 
-        <Input label="Merchant" placeholder="e.g. Swiggy, Uber..." {...register('merchant')} />
-        <Input label="Date" type="date" {...register('expense_date', { required: 'Required' })} error={errors.expense_date?.message} />
-        <Input label="Notes (optional)" placeholder="Any details..." {...register('notes')} />
+        <Input label="Merchant / Store" placeholder="e.g. Swiggy, Uber, Amazon..." {...register('merchant')} />
+        <Input label="Item Description" placeholder="e.g. Lunch, Flight ticket, Groceries..." {...register('notes')} />
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-gray-300">Date</label>
+          <div className="relative">
+            <input
+              type="date"
+              style={{ colorScheme: 'dark' }}
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+              {...register('expense_date', { required: 'Required' })}
+            />
+            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          </div>
+          {errors.expense_date && <p className="text-xs text-red-400">{errors.expense_date.message}</p>}
+        </div>
 
         <div className="flex gap-3 pt-2">
           <Button type="button" variant="secondary" className="flex-1" onClick={onClose}>Cancel</Button>
