@@ -1,0 +1,78 @@
+const translations: Record<string, Record<string, string>> = {
+  en: {
+    dashboard: 'Dashboard', expenses: 'Expenses', budgets: 'Budgets',
+    analytics: 'Analytics', settings: 'Settings', logout: 'Logout',
+    add_expense: 'Add Expense', total_spending: 'Total Spending',
+    recent_transactions: 'Recent Transactions', upgrade_to_pro: 'Upgrade to Pro',
+    save_changes: 'Save Changes', full_name: 'Full Name', language: 'Language',
+    default_currency: 'Default Currency', profile: 'Profile', subscription: 'Subscription',
+    welcome_back: 'Welcome back', sign_in: 'Sign in to CashCompass',
+  },
+  hi: {
+    dashboard: 'डैशबोर्ड', expenses: 'खर्चे', budgets: 'बजट',
+    analytics: 'विश्लेषण', settings: 'सेटिंग्स', logout: 'लॉग आउट',
+    add_expense: 'खर्च जोड़ें', total_spending: 'कुल खर्च',
+    recent_transactions: 'हाल के लेनदेन', upgrade_to_pro: 'प्रो में अपग्रेड करें',
+    save_changes: 'परिवर्तन सहेजें', full_name: 'पूरा नाम', language: 'भाषा',
+    default_currency: 'डिफ़ॉल्ट मुद्रा', profile: 'प्रोफाइल', subscription: 'सदस्यता',
+    welcome_back: 'वापस स्वागत है', sign_in: 'CashCompass में साइन इन करें',
+  },
+  ta: {
+    dashboard: 'டாஷ்போர்டு', expenses: 'செலவுகள்', budgets: 'பட்ஜெட்',
+    analytics: 'பகுப்பாய்வு', settings: 'அமைப்புகள்', logout: 'வெளியேறு',
+    add_expense: 'செலவு சேர்', total_spending: 'மொத்த செலவு',
+    recent_transactions: 'சமீபத்திய பரிவர்த்தனைகள்', upgrade_to_pro: 'புரோவிற்கு மேம்படுத்து',
+    save_changes: 'மாற்றங்களை சேமி', full_name: 'முழு பெயர்', language: 'மொழி',
+    default_currency: 'இயல்புநிலை நாணயம்', profile: 'சுயவிவரம்', subscription: 'சந்தா',
+    welcome_back: 'மீண்டும் வரவேற்கிறோம்', sign_in: 'CashCompass இல் உள்நுழைக',
+  },
+  te: {
+    dashboard: 'డాష్‌బోర్డ్', expenses: 'ఖర్చులు', budgets: 'బడ్జెట్',
+    analytics: 'విశ్లేషణ', settings: 'సెట్టింగులు', logout: 'లాగ్ అవుట్',
+    add_expense: 'ఖర్చు జోడించు', total_spending: 'మొత్తం వ్యయం',
+    recent_transactions: 'ఇటీవలి లావాదేవీలు', upgrade_to_pro: 'ప్రోకి అప్‌గ్రేడ్',
+    save_changes: 'మార్పులు సేవ్ చేయి', full_name: 'పూర్తి పేరు', language: 'భాష',
+    default_currency: 'డిఫాల్ట్ కరెన్సీ', profile: 'ప్రొఫైల్', subscription: 'సభ్యత్వం',
+    welcome_back: 'తిరిగి స్వాగతం', sign_in: 'CashCompass లో సైన్ ఇన్',
+  },
+  kn: {
+    dashboard: 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್', expenses: 'ಖರ್ಚುಗಳು', budgets: 'ಬಜೆಟ್',
+    analytics: 'ವಿಶ್ಲೇಷಣೆ', settings: 'ಸೆಟ್ಟಿಂಗ್‌ಗಳು', logout: 'ಲಾಗ್ ಔಟ್',
+    add_expense: 'ಖರ್ಚು ಸೇರಿಸಿ', total_spending: 'ಒಟ್ಟು ಖರ್ಚು',
+    recent_transactions: 'ಇತ್ತೀಚಿನ ವಹಿವಾಟುಗಳು', upgrade_to_pro: 'ಪ್ರೊಗೆ ಅಪ್‌ಗ್ರೇಡ್',
+    save_changes: 'ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ', full_name: 'ಪೂರ್ಣ ಹೆಸರು', language: 'ಭಾಷೆ',
+    default_currency: 'ಡಿಫಾಲ್ಟ್ ಕರೆನ್ಸಿ', profile: 'ಪ್ರೊಫೈಲ್', subscription: 'ಚಂದಾದಾರಿಕೆ',
+    welcome_back: 'ಮರಳಿ ಸ್ವಾಗತ', sign_in: 'CashCompass ಗೆ ಸೈನ್ ಇನ್',
+  },
+  mr: {
+    dashboard: 'डॅशबोर्ड', expenses: 'खर्च', budgets: 'अर्थसंकल्प',
+    analytics: 'विश्लेषण', settings: 'सेटिंग्ज', logout: 'लॉग आउट',
+    add_expense: 'खर्च जोडा', total_spending: 'एकूण खर्च',
+    recent_transactions: 'अलीकडील व्यवहार', upgrade_to_pro: 'प्रोमध्ये अपग्रेड करा',
+    save_changes: 'बदल जतन करा', full_name: 'पूर्ण नाव', language: 'भाषा',
+    default_currency: 'डीफॉल्ट चलन', profile: 'प्रोफाइल', subscription: 'सदस्यता',
+    welcome_back: 'परत स्वागत आहे', sign_in: 'CashCompass मध्ये साइन इन करा',
+  },
+  bn: {
+    dashboard: 'ড্যাশবোর্ড', expenses: 'খরচ', budgets: 'বাজেট',
+    analytics: 'বিশ্লেষণ', settings: 'সেটিংস', logout: 'লগ আউট',
+    add_expense: 'খরচ যোগ করুন', total_spending: 'মোট ব্যয়',
+    recent_transactions: 'সাম্প্রতিক লেনদেন', upgrade_to_pro: 'প্রোতে আপগ্রেড করুন',
+    save_changes: 'পরিবর্তন সংরক্ষণ করুন', full_name: 'পুরো নাম', language: 'ভাষা',
+    default_currency: 'ডিফল্ট মুদ্রা', profile: 'প্রোফাইল', subscription: 'সদস্যতা',
+    welcome_back: 'আবার স্বাগতম', sign_in: 'CashCompass এ সাইন ইন করুন',
+  },
+  gu: {
+    dashboard: 'ડેશબોર્ડ', expenses: 'ખર્ચ', budgets: 'બજેટ',
+    analytics: 'વિશ્લેષણ', settings: 'સેટિંગ્સ', logout: 'લૉગ આઉટ',
+    add_expense: 'ખર્ચ ઉમેરો', total_spending: 'કુલ ખર્ચ',
+    recent_transactions: 'તાજેતરના વ્યવહારો', upgrade_to_pro: 'પ્રોમાં અપગ્રેડ કરો',
+    save_changes: 'ફેરફારો સાચવો', full_name: 'પૂરું નામ', language: 'ભાષા',
+    default_currency: 'ડિફૉલ્ટ ચલણ', profile: 'પ્રોફાઇલ', subscription: 'સભ્યપદ',
+    welcome_back: 'પાછા સ્વાગત છે', sign_in: 'CashCompass માં સાઇન ઇન કરો',
+  },
+}
+
+export function t(key: string, lang: string): string {
+  return translations[lang]?.[key] ?? translations['en'][key] ?? key
+}

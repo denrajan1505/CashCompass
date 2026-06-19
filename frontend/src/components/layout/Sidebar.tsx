@@ -9,18 +9,20 @@ import { useAuthStore } from '@/store/authStore'
 import Badge from '@/components/ui/Badge'
 import Modal from '@/components/ui/Modal'
 import Button from '@/components/ui/Button'
-
-const nav = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/expenses', icon: Receipt, label: 'Expenses' },
-  { to: '/budgets', icon: Wallet, label: 'Budgets' },
-  { to: '/analytics', icon: PieChart, label: 'Analytics' },
-  { to: '/receipts', icon: Mic, label: 'Receipt Scanner', pro: true },
-  { to: '/chat', icon: MessageSquare, label: 'AI Chat' },
-]
+import { t } from '@/utils/i18n'
 
 export default function Sidebar() {
   const { user, logout } = useAuthStore()
+  const lang = user?.preferred_language || 'en'
+
+  const nav = [
+    { to: '/dashboard', icon: LayoutDashboard, label: t('dashboard', lang) },
+    { to: '/expenses', icon: Receipt, label: t('expenses', lang) },
+    { to: '/budgets', icon: Wallet, label: t('budgets', lang) },
+    { to: '/analytics', icon: PieChart, label: t('analytics', lang) },
+    { to: '/receipts', icon: Mic, label: 'Receipt Scanner', pro: true },
+    { to: '/chat', icon: MessageSquare, label: 'AI Chat' },
+  ]
   const navigate = useNavigate()
   const [showLogoutModal, setShowLogoutModal] = useState(false)
 
@@ -86,7 +88,7 @@ export default function Sidebar() {
         <button onClick={() => setShowLogoutModal(true)}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all">
           <LogOut className="w-4 h-4" />
-          <span>Logout</span>
+          <span>{t('logout', lang)}</span>
         </button>
 
         <Modal open={showLogoutModal} onClose={() => setShowLogoutModal(false)} title="Confirm Logout" size="sm">
