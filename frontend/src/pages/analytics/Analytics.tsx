@@ -122,41 +122,41 @@ export default function Analytics() {
           </Card>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Category Donut */}
+            {/* Category Breakdown */}
             <Card>
               <h2 className="text-sm font-semibold text-gray-300 mb-4">Category Breakdown</h2>
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={data.category_breakdown}
-                    dataKey="amount"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={3}
-                  >
-                    {data.category_breakdown.map((e: any) => (
-                      <Cell key={e.category} fill={CATEGORY_COLORS[e.category] || '#6C63FF'} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{ background: '#1a1a26', border: '1px solid #3a3a50', borderRadius: 12 }}
-                    formatter={(v: any) => [formatCurrency(v, data.currency), 'Amount']}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="space-y-2 mt-2">
+
+              {/* Stacked percentage bar */}
+              <div className="flex h-3 rounded-full overflow-hidden mb-5 gap-0.5">
                 {data.category_breakdown.map((c: any) => (
-                  <div key={c.category} className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: CATEGORY_COLORS[c.category] || '#6C63FF' }} />
-                      <span className="text-gray-400">{c.category}</span>
+                  <div
+                    key={c.category}
+                    style={{ width: `${c.percentage}%`, background: CATEGORY_COLORS[c.category] || '#6C63FF' }}
+                    title={`${c.category}: ${c.percentage.toFixed(0)}%`}
+                  />
+                ))}
+              </div>
+
+              {/* Horizontal bars */}
+              <div className="space-y-3 mb-4">
+                {data.category_breakdown.map((c: any) => (
+                  <div key={c.category}>
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: CATEGORY_COLORS[c.category] || '#6C63FF' }} />
+                        <span className="text-gray-300">{c.category}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-500">{c.count} txns</span>
+                        <span className="text-white font-medium">{formatCurrency(c.amount, data.currency)}</span>
+                        <span className="text-gray-500 w-7 text-right">{c.percentage.toFixed(0)}%</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-gray-500">{c.count} txns</span>
-                      <span className="text-white font-medium">{formatCurrency(c.amount, data.currency)}</span>
-                      <span className="text-gray-600 w-8 text-right">{c.percentage.toFixed(0)}%</span>
+                    <div className="h-1.5 bg-dark-600 rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{ width: `${c.percentage}%`, background: CATEGORY_COLORS[c.category] || '#6C63FF' }}
+                      />
                     </div>
                   </div>
                 ))}
