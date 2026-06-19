@@ -6,6 +6,7 @@ import LandingPage from '@/pages/LandingPage'
 import Login from '@/pages/auth/Login'
 import Register from '@/pages/auth/Register'
 import ForgotPassword from '@/pages/auth/ForgotPassword'
+import ResetPassword from '@/pages/auth/ResetPassword'
 import Dashboard from '@/pages/dashboard/Dashboard'
 import ExpenseList from '@/pages/expenses/ExpenseList'
 import Budgets from '@/pages/budgets/Budgets'
@@ -35,6 +36,7 @@ export default function App() {
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
       <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
 
       {/* Private — wrapped in sidebar layout */}
       <Route element={<PrivateRoute><Layout /></PrivateRoute>}>
