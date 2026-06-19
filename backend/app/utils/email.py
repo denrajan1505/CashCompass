@@ -8,15 +8,20 @@ def send_email(to: str, subject: str, html_body: str):
     if not settings.SMTP_USER:
         print(f"[email] SMTP not configured — skipping email to {to}")
         return
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
-    msg["From"] = settings.EMAIL_FROM
-    msg["To"] = to
-    msg.attach(MIMEText(html_body, "html"))
-    with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT) as server:
-        server.starttls()
-        server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
-        server.sendmail(settings.EMAIL_FROM, to, msg.as_string())
+    print(f"[email] Sending '{subject}' to {to} via {settings.SMTP_HOST}:{settings.SMTP_PORT} as {settings.SMTP_USER}")
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = settings.EMAIL_FROM
+        msg["To"] = to
+        msg.attach(MIMEText(html_body, "html"))
+        with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT) as server:
+            server.starttls()
+            server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
+            server.sendmail(settings.EMAIL_FROM, to, msg.as_string())
+        print(f"[email] Successfully sent to {to}")
+    except Exception as e:
+        print(f"[email] ERROR sending to {to}: {e}")
 
 
 def send_verification_email(to: str, full_name: str, token: str):
